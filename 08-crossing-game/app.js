@@ -6,6 +6,8 @@ let screenWidth = 1000;
 let screenHeight = 500;
 let width = 80;
 let isGameLive = true;
+let isRightKeyPressed = false;
+let isLeftKeyPressed = false;
 
 class GameCharacter {
     constructor(x, y, width, height, color, speed) {
@@ -63,20 +65,43 @@ let loadSprites = function () {
 };
 
 document.onkeydown = function (event) {
+    // let keyPressed = event.keyCode;
+    // if (keyPressed === 39) {
+    //     player.speed = player.maxSpeed;
+    // }
+    // if (keyPressed === 37) {
+    //     player.speed = -player.maxSpeed;
+    // }
     let keyPressed = event.keyCode;
     if (keyPressed === 39) {
+        isRightKeyPressed = true;
         player.speed = player.maxSpeed;
     }
-
     if (keyPressed === 37) {
+        isLeftKeyPressed = true;
         player.speed = -player.maxSpeed;
     }
 };
-
 document.onkeyup = function (event) {
-    let keyPressed = event.keyCode;
-    if (keyPressed == 39 || keyPressed == 37) {
-        player.speed = 0;
+    // let keyPressed = event.keyCode;
+    // if (keyPressed === 39 || keyPressed === 37) {
+    //     player.speed = 0;
+    // }
+    let keyUp = event.keyCode;
+    if (keyUp === 39) {
+        isRightKeyPressed = false;
+        if (isLeftKeyPressed) {
+            player.speed = -player.maxSpeed;
+        } else {
+            player.speed = 0;
+        }
+    } else if (keyUp === 37) {
+        isLeftKeyPressed = false;
+        if (isRightKeyPressed) {
+            player.speed = player.maxSpeed;
+        } else {
+            player.speed = 0;
+        }
     }
 };
 
