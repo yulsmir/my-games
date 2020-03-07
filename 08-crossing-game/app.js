@@ -37,14 +37,14 @@ class GameCharacter {
 let rectangle = new GameCharacter(50, 50, 50, 50, "rgb(0, 0, 255)", 2);
 
 let enemies = [
-    new GameCharacter(200, 22, width, width, 'rgb(255, 255, 255)', 2),
-    new GameCharacter(450, screenHeight - 100, width, width, 'rgb(255, 255, 255)', 3),
-    new GameCharacter(700, 50, width, width, 'rgb(255, 255, 255)', 4),
+    new GameCharacter(200, 22, 51, 65, 'rgb(255, 255, 255)', 2),
+    new GameCharacter(450, screenHeight - 100, 51, 65, 'rgb(255, 255, 255)', 3),
+    new GameCharacter(700, 50, 51, 65, 'rgb(255, 255, 255)', 4),
 ];
 
-let goal = new GameCharacter(screenWidth - 75, 200, 150, 200, 'rgb(250, 100, 0)');
+let goal = new GameCharacter(screenWidth - 75, 200, 80,120, 'rgb(250, 100, 0)');
 
-let player = new GameCharacter(0, 225, width, width, 'rgb(255, 255, 0)', 0);
+let player = new GameCharacter(0, 225, 52, 83, 'rgb(255, 255, 0)', 0);
 
 let sprites = {};
 
@@ -74,7 +74,10 @@ document.onkeydown = function (event) {
 };
 
 document.onkeyup = function (event) {
-    player.speed = 0;
+    let keyPressed = event.keyCode;
+    if (keyPressed == 39 || keyPressed == 37) {
+        player.speed = 0;
+    }
 };
 
 let checkCollisions = function (rect1, rect2) {
