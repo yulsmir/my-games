@@ -1,5 +1,5 @@
 {
-  "name": "my-gamess",
+  "name": "my-games",
   "version": "0.0.1",
   "description": "My games",
   "main": "app.js",
@@ -10,7 +10,7 @@
     "type": "git",
     "url": "git+https://github.com/yuslmir/my-games.git"
   },
-  "author": "",
+  "author": "Yuliia Smirnova",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/anplug/mtm-app/issues"
