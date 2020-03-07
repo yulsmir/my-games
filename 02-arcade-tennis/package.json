@@ -1,0 +1,20 @@
+{
+  "name": "arcade-tennis-game",
+  "version": "1.0.0",
+  "description": "Javascript & Canvas",
+  "main": "backend.js",
+  "scripts": {
+    "start": "node backend.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yulsmir/my-study-projects.git"
+  },
+  "author": "Yuliia Smirnova",
+  "license": "ISC",
+  "homepage": "https://github.com/yulsmir/my-study-projects.git",
+  "devDependencies": {},
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "platformer-pikachu",
+  "version": "1.0.0",
+  "description": "My first Phaser game",
+  "main": "backend.js",
+  "scripts": {
+    "start": "node backend.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yulsmir/my-study-projects.git"
+  },
+  "keywords": [],
+  "author": "Yuliia Smirnova",
+  "license": "ISC",
+  "devDependencies": {},
+  "dependencies": {
+    "express": "^4.17.1",
+    "phaser": "^3.22.0"
+  }
+}

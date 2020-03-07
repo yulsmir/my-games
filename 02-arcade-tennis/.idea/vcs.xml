@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/00-barchart" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/02_vending_machine" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/phaser-3-and-tiled-building-a-platformer-assets/stackabuse-platformer" vcs="Git" />
+  </component>
+</project>
