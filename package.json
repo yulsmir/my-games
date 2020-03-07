@@ -1,0 +1,22 @@
+{
+  "name": "mtm-app",
+  "version": "0.0.1",
+  "description": "Testing Heroku App",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anplug/mtm-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anplug/mtm-app/issues"
+  },
+  "homepage": "https://github.com/anplug/mtm-app#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
