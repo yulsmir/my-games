@@ -1,14 +1,14 @@
 {
-  "name": "mtm-app",
+  "name": "my-gamess",
   "version": "0.0.1",
-  "description": "Testing Heroku App",
+  "description": "My games",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/anplug/mtm-app.git"
+    "url": "git+https://github.com/yuslmir/my-games.git"
   },
   "author": "",
   "license": "ISC",
