@@ -4,7 +4,7 @@ var app = express();
 var port = process.env.PORT || 8080;
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'my-games', req.path));
+  res.sendFile(path.join(__dirname, req.path));
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}`));
