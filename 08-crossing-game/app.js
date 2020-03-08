@@ -44,7 +44,7 @@ let enemies = [
     new GameCharacter(700, 50, 51, 65, 'rgb(255, 255, 255)', 4),
 ];
 
-let goal = new GameCharacter(screenWidth - 75, 200, 80,120, 'rgb(250, 100, 0)');
+let goal = new GameCharacter(screenWidth - 75, 200, 80, 120, 'rgb(250, 100, 0)');
 
 let player = new GameCharacter(0, 225, 52, 83, 'rgb(255, 255, 0)', 0);
 
