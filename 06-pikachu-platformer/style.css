@@ -1,3 +1,7 @@
-html {
-    margin: 0 auto;
+/*html {*/
+/*    margin: 0 auto;*/
+/*}*/
+
+canvas {
+    width: 100%;
 }
