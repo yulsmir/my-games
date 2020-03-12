@@ -15,7 +15,7 @@ gameScene.preload = function () {
 
     this.load.audio('treeAudio', 'assets/audio/arbol.mp3');
     this.load.audio('carAudio', 'assets/audio/auto.mp3');
-    this.load.audio('houseAudio', 'assets/audio/car.mp3');
+    this.load.audio('houseAudio', 'assets/audio/casa.mp3');
     this.load.audio('buildingAudio', 'assets/audio/edificio.mp3');
     this.load.audio('correct', 'assets/audio/correct.mp3');
     this.load.audio('wrong', 'assets/audio/wrong.mp3');
@@ -43,29 +43,41 @@ gameScene.create = function () {
                 y: 0.8
             }
         },
-      {
-        key: 'car',
-        setXY: {
-          x: 400,
-          y: 300
+        {
+            key: 'car',
+            setXY: {
+                x: 400,
+                y: 300
+            },
+            setScale: {
+                x: 0.8,
+                y: 0.8
+            }
         },
-        setScale: {
-          x: 0.8,
-          y: 0.8
-        }
-      },
-      {
-        key: 'tree',
-        setXY: {
-          x: 550,
-          y: 250
+        {
+            key: 'tree',
+            setXY: {
+                x: 550,
+                y: 250
+            },
         },
-      },
     ]);
+    //background
+    let bg = this.add.sprite(0, 0, 'background').setOrigin(0, 0);
+    //items on top of the background
+    this.items.setDepth(1);
 
-    // soundSample.stop();
-    // soundSample.pause();
-    // soundSample.resume();
+    Phaser.Actions.Call(this.items.getChildren(), function (item) {
+        //make the item interactive
+        item.setInteractive();
+        item.on('pointerdown', function (pointer) {
+            console.log('you clicked ' + item.texture.key);
+        });
+    }, this);
+    bg.on('pointerdown', function(pointer){
+        console.log('click');
+        console.log(pointer);
+    })
 };
 
 // our game's configuration
