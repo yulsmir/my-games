@@ -23,14 +23,9 @@ gameScene.create = function() {
 
     this.goal = this.add.sprite(this.sys.game.config.width - 80, this.sys.game.config.height / 2, 'goal');
     this.goal.setScale(0.7);
-    // this.enemy1 = this.add.sprite(250, 180, 'enemy');
-    // this.enemy1.setScale(0.5);
-    // enemy1.flipX = true;
-    // enemy2.flipY = true;
-    // enemy1.angle = 45;
-    // enemy1.setAngle(45);
-    // this.enemy1.rotation = Math.PI / 4;
-    // this.enemy1.setRotation(Math.PI / 4);
+    this.enemy = this.add.sprite(120, this.sys.game.config.height / 2, 'enemy');
+    this.enemy.flipX = true;
+    this.enemy.setScale(0.6);
 };
 
 gameScene.update = function() {
