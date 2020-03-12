@@ -5,6 +5,9 @@ let enemy;
 
 gameScene.init = function() {
     this.playerSpeed = 3;
+    this.enemySpeed = 3;
+    this.enemyMinY = 80;
+    this.enemyMaxY = 280;
 };
 
 gameScene.preload = function() {
@@ -48,6 +51,15 @@ gameScene.update = function() {
         this.scene.manager.bootScene(this);
     }
 
+    this.enemy.y += this.enemySpeed;
+
+    if (this.enemy.y <= this.enemyMinY){
+        this.enemySpeed *= -1;
+    }
+
+    if (this.enemy.y >= this.enemyMaxY){
+        this.enemySpeed *= -1;
+    }
 
 
 };
