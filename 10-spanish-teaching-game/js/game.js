@@ -70,11 +70,50 @@ gameScene.create = function () {
     Phaser.Actions.Call(this.items.getChildren(), function (item) {
         //make the item interactive
         item.setInteractive();
-        item.on('pointerdown', function (pointer) {
-            console.log('you clicked ' + item.texture.key);
+
+        //creating tween
+        item.resizeTween = this.tweens.add({
+            targets: item,
+            scaleX: 1.2,
+            scaleY: 1.2,
+            duration: 200,
+            paused: true,
+            yoyo: true
         });
+
+        //transparancy tween
+
+        item.alphaTween = this.tweens.add({
+            targets: item,
+            alpha: 0.7,
+            duration: 100,
+            paused: true,
+
+        });
+
+        //listen to the pointdownevent
+        item.on('pointerdown', function (pointer) {
+            item.resizeTween.restart();
+        });
+
+        // listen to the pointerover
+        item.on('pointerover', function (pointer) {
+            item.alphaTween.restart();
+        });
+
+        item.on('pointerout', function (pointer) {
+            //stop alpha twin
+            item.alphaTween.stop();
+
+            //set no transparancy
+            item.alpha = 1;
+        });
+
+
+
+
     }, this);
-    bg.on('pointerdown', function(pointer){
+    bg.on('pointerdown', function (pointer) {
         console.log('click');
         console.log(pointer);
     })
