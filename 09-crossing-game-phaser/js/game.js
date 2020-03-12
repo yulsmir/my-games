@@ -25,45 +25,67 @@ gameScene.create = function() {
     this.player = this.add.sprite(40, this.sys.game.config.height / 2, 'player');
     this.player.setScale(0.5);
 
+    //goal
     this.goal = this.add.sprite(this.sys.game.config.width - 80, this.sys.game.config.height / 2, 'goal');
     this.goal.setScale(0.7);
-    this.enemy = this.add.sprite(120, this.sys.game.config.height / 2, 'enemy');
-    this.enemy.flipX = true;
-    this.enemy.setScale(0.6);
 
-    //enemy speed
-    let direction = Math.random() < 0.5 ? 1 : -1;
-    let speed = this.enemyMinSpeed + Math.random() * (this.enemyMaxSpeed - this.enemyMinSpeed);
-    this.enemy.speed = direction * speed;
+    //enemy
+    this.enemies = this.add.group({
+        key: 'enemy',
+        repeat: 5,
+        setXY: {
+            x: 90,
+            y: 100,
+            stepX: 80,
+            stepY: 20
+        }
+    });
+
+    Phaser.Actions.ScaleXY(this.enemies.getChildren(), -0.4, -0.4);
+    console.log(this.enemies.getChildren());
+
+    Phaser.Actions.Call(this.enemies.getChildren(), function (enemy) {
+        enemy.flipX = true;
+
+        let direction = Math.random() < 0.5 ? 1 : -1;
+        let speed = this.enemyMinSpeed + Math.random() * (this.enemyMaxSpeed - this.enemyMinSpeed);
+        enemy.speed = direction * speed;
+
+    }, this);
+
 };
 
 gameScene.update = function() {
-    // this.enemy1.x += 0.1;
-    // this.enemy1.rotation += 0.1;
-    // this.enemy1.angle += 1;
-    //
-    // if (this.player.scaleX < 2) {
-    //     this.player.scaleX += 0.01;
-    //     this.player.scaleY += 0.01;
-    // }
     if(this.input.activePointer.isDown) {
       this.player.x += this.playerSpeed;
     }
 
+    let enemies = this.enemies.getChildren();
+    let numEnemies = enemies.length;
     let playerRect = this.player.getBounds();
-    let treasureRect = this.goal.getBounds();
-    if (Phaser.Geom.Intersects.RectangleToTriangle(playerRect, treasureRect)) {
-        alert('You won!');
-        this.scene.manager.bootScene(this);
+
+    for(let i = 0; i < numEnemies; i++) {
+        //enemy movement
+        enemies[i].y += enemies[i].speed;
+
+        //check if we pass min or max Y
+        let conditionUp = enemies[i].speed < 0 && enemies[i].y <= this.enemyMinY;
+        let conditionDown = enemies[i].speed > 0 && enemies[i].y >= this.enemyMaxY;
+
+        if(conditionUp || conditionDown) {
+            enemies[i].speed *= -1;
+        }
+
+        //check enemy overlap
+
+        let enemyRect = enemies[i].getBounds();
+        if (Phaser.Geom.Intersects.RectangleToTriangle(playerRect, enemyRect)) {
+            alert('Game Over');
+            this.scene.manager.bootScene(this);
+        }
     }
 
-    this.enemy.y += this.enemy.speed;
 
-    let conditionUp = this.enemy.speed < 0 && this.enemy.y <= this.enemyMinY;
-    let conditionDown = this.enemy.speed > 0 && this.enemy.y >= this.enemyMaxY;
-    if(conditionUp || conditionDown) {
-        this.enemy.speed *= -1;
-    }
 };
 
 let config = {
