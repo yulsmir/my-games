@@ -5,7 +5,8 @@ let enemy;
 
 gameScene.init = function() {
     this.playerSpeed = 3;
-    this.enemySpeed = 3;
+    this.enemyMinSpeed = 2;
+    this.enemyMaxSpeed = 5;
     this.enemyMinY = 80;
     this.enemyMaxY = 280;
 };
@@ -29,6 +30,11 @@ gameScene.create = function() {
     this.enemy = this.add.sprite(120, this.sys.game.config.height / 2, 'enemy');
     this.enemy.flipX = true;
     this.enemy.setScale(0.6);
+
+    //enemy speed
+    let direction = Math.random() < 0.5 ? 1 : -1;
+    let speed = this.enemyMinSpeed + Math.random() * (this.enemyMaxSpeed - this.enemyMinSpeed);
+    this.enemy.speed = direction * speed;
 };
 
 gameScene.update = function() {
@@ -51,17 +57,13 @@ gameScene.update = function() {
         this.scene.manager.bootScene(this);
     }
 
-    this.enemy.y += this.enemySpeed;
+    this.enemy.y += this.enemy.speed;
 
-    if (this.enemy.y <= this.enemyMinY){
-        this.enemySpeed *= -1;
+    let conditionUp = this.enemy.speed < 0 && this.enemy.y <= this.enemyMinY;
+    let conditionDown = this.enemy.speed > 0 && this.enemy.y >= this.enemyMaxY;
+    if(conditionUp || conditionDown) {
+        this.enemy.speed *= -1;
     }
-
-    if (this.enemy.y >= this.enemyMaxY){
-        this.enemySpeed *= -1;
-    }
-
-
 };
 
 let config = {
