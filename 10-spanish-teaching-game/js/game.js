@@ -78,7 +78,8 @@ gameScene.create = function () {
             scaleY: 1.2,
             duration: 200,
             paused: true,
-            yoyo: true
+            yoyo: true,
+            ease: 'Quad.easeInOut'
         });
 
         //transparancy tween
@@ -105,7 +106,7 @@ gameScene.create = function () {
             //stop alpha twin
             item.alphaTween.stop();
 
-            //set no transparancy
+            //set no transparency
             item.alpha = 1;
         });
 
