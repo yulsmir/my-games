@@ -3,6 +3,49 @@ let gameScene = new Phaser.Scene('Game');
 
 // some parameters for our scene
 gameScene.init = function () {
+//    word database
+    this.words = [
+        {
+            key: 'building',
+            setXY: {
+                x: 100,
+                y: 240
+            },
+            spanish: 'edificio'
+        },
+        {
+            key: 'house',
+            setXY: {
+                x: 240,
+                y: 280
+            },
+            setScale: {
+                x: 0.8,
+                y: 0.8
+            },
+            spanish: 'casa'
+        },
+        {
+            key: 'car',
+            setXY: {
+                x: 400,
+                y: 300
+            },
+            setScale: {
+                x: 0.8,
+                y: 0.8
+            },
+            spanish: 'auto'
+        },
+        {
+            key: 'tree',
+            setXY: {
+                x: 550,
+                y: 250
+            },
+            spanish: 'arbol'
+        },
+    ]
 };
 
 // load asset files for our game
@@ -24,50 +67,17 @@ gameScene.preload = function () {
 // executed once, after assets were loaded
 gameScene.create = function () {
     this.add.sprite(0, 0, 'background').setOrigin(0, 0);
-    this.items = this.add.group([
-        {
-            key: 'building',
-            setXY: {
-                x: 100,
-                y: 240
-            }
-        },
-        {
-            key: 'house',
-            setXY: {
-                x: 240,
-                y: 280
-            },
-            setScale: {
-                x: 0.8,
-                y: 0.8
-            }
-        },
-        {
-            key: 'car',
-            setXY: {
-                x: 400,
-                y: 300
-            },
-            setScale: {
-                x: 0.8,
-                y: 0.8
-            }
-        },
-        {
-            key: 'tree',
-            setXY: {
-                x: 550,
-                y: 250
-            },
-        },
-    ]);
+    this.items = this.add.group(this.words);
     //background
-    let bg = this.add.sprite(0, 0, 'background').setOrigin(0, 0);
+    var bg = this.add.sprite(0, 0, 'background').setOrigin(0, 0);
     //items on top of the background
     this.items.setDepth(1);
 
-    Phaser.Actions.Call(this.items.getChildren(), function (item) {
+    //getting group array
+    let items = this.items.getChildren();
+    for (let i = 0; i < items.length; i++) {
+        let item = items[i];
+
         //make the item interactive
         item.setInteractive();
 
@@ -95,12 +105,14 @@ gameScene.create = function () {
         //listen to the pointdownevent
         item.on('pointerdown', function (pointer) {
             item.resizeTween.restart();
-        });
+            //    show next question
+            this.showNextQuestion();
+        }, this);
 
         // listen to the pointerover
         item.on('pointerover', function (pointer) {
             item.alphaTween.restart();
-        });
+        }, this);
 
         item.on('pointerout', function (pointer) {
             //stop alpha twin
@@ -108,17 +120,50 @@ gameScene.create = function () {
 
             //set no transparency
             item.alpha = 1;
-        });
+        }, this);
 
+        //create a sound for each word
+        this.words[i].sound = this.sound.add(this.words[i].key + 'Audio');
+    }
 
+    //text object
 
+    this.wordText = this.add.text(30, 20, 'hello', {
+        font: '24px Open Sans',
+        fill: '#ffffff'
+    });
 
-    }, this);
-    bg.on('pointerdown', function (pointer) {
-        console.log('click');
-        console.log(pointer);
-    })
+    //correct and wrong sounds
+    
+    //show the first question
+    this.showNextQuestion();
 };
+
+gameScene.showNextQuestion = function () {
+    // select a random world
+    this.nextWord = Phaser.Math.RND.pick(this.words);
+
+    // play a sound
+    this.nextWord.sound.play();
+    // show text
+    this.wordText.setText(nextWord.spanish);
+};
+
+// answer processing
+gameScene.processAnswer = function (userResponse) {
+//    compare user response wth correct response
+    if (userResponse === this.nextWord.spanish) {
+        //    it's correct
+
+        //    play sound
+        return true;
+    } else {
+        //    it's wrong
+
+        //    play sound
+    }
+    return false;
+}
 
 // our game's configuration
 let config = {
