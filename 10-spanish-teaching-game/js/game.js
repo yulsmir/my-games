@@ -104,8 +104,11 @@ gameScene.create = function () {
 
         //listen to the pointdownevent
         item.on('pointerdown', function (pointer) {
-            item.resizeTween.restart();
-            //    show next question
+            // item.resizeTween.restart();
+
+            let result = this.processAnswer(this.words[i].spanish);
+
+            //    show next questions
             this.showNextQuestion();
         }, this);
 
@@ -129,12 +132,13 @@ gameScene.create = function () {
     //text object
 
     this.wordText = this.add.text(30, 20, 'hello', {
-        font: '24px Open Sans',
+        font: '32px Sans Serif',
         fill: '#ffffff'
     });
 
     //correct and wrong sounds
-    
+    this.correctSound = this.sound.add('correct');
+    this.wrongSound = this.sound.add('wrong');
     //show the first question
     this.showNextQuestion();
 };
@@ -146,7 +150,7 @@ gameScene.showNextQuestion = function () {
     // play a sound
     this.nextWord.sound.play();
     // show text
-    this.wordText.setText(nextWord.spanish);
+    this.wordText.setText(this.nextWord.spanish);
 };
 
 // answer processing
@@ -156,13 +160,15 @@ gameScene.processAnswer = function (userResponse) {
         //    it's correct
 
         //    play sound
+        this.correctSound.play();
         return true;
     } else {
         //    it's wrong
 
         //    play sound
+        this.wrongSound.play();
+        return false;
     }
-    return false;
 }
 
 // our game's configuration
