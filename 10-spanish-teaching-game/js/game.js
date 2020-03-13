@@ -82,11 +82,22 @@ gameScene.create = function () {
         item.setInteractive();
 
         //creating tween
-        item.resizeTween = this.tweens.add({
+        item.correctTween = this.tweens.add({
             targets: item,
             scaleX: 1.2,
             scaleY: 1.2,
-            duration: 200,
+            duration: 300,
+            paused: true,
+            yoyo: true,
+            ease: 'Quad.easeInOut'
+        });
+
+        item.wrongTween = this.tweens.add({
+            targets: item,
+            scaleX: 1.2,
+            scaleY: 1.2,
+            duration: 300,
+            angle: 90,
             paused: true,
             yoyo: true,
             ease: 'Quad.easeInOut'
@@ -104,9 +115,13 @@ gameScene.create = function () {
 
         //listen to the pointdownevent
         item.on('pointerdown', function (pointer) {
-            // item.resizeTween.restart();
-
             let result = this.processAnswer(this.words[i].spanish);
+            // depending on result = one or the other tween
+            if (result) {
+                item.correctTween.restart();
+            } else {
+                item.wrongTween.restart();
+            }
 
             //    show next questions
             this.showNextQuestion();
