@@ -31,7 +31,11 @@ gameScene.preload = function () {
 
 // executed once, after assets were loaded
 gameScene.create = function () {
-    this.background = this.add.sprite(0, 0, 'backyard').setOrigin(0, 0).setInteractive();
+    let background = this.add.sprite(0, 0, 'backyard').setOrigin(0, 0).setInteractive();
+
+    // event listener for bg
+    background.on('pointerdown', this.placeItem, this);
+
     this.pet = this.add.sprite(100, 200, 'pet', 0).setInteractive();
 
     //make pet draggable
@@ -53,7 +57,6 @@ gameScene.createUi = function () {
     this.appleBtn = this.add.sprite(72, 570, 'apple').setInteractive();
     this.appleBtn.customStats = {health: 20, fun: 0};
     this.appleBtn.on('pointerdown', this.pickItem);
-
 
     this.candyBtn = this.add.sprite(144, 570, 'candy').setInteractive();
     this.candyBtn.customStats = {health: -10, fun: 10};
@@ -126,6 +129,15 @@ gameScene.uiReady = function () {
 
     //make scene unblocked
     this.uiBlocked = false;
+};
+
+//place new item
+gameScene.placeItem = function (pointer, localX, localY) {
+    // check if item was selected
+    if (!this.selectedItem) return;
+
+    //create new item
+    let newItem = this.add.sprite(localX, localY, this.selectedItem.texture.key);
 };
 // our game's configuration
 let config = {
