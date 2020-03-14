@@ -48,7 +48,6 @@ gameScene.create = function () {
 };
 
 //create UI
-
 gameScene.createUi = function () {
 //buttons
     this.appleBtn = this.add.sprite(72, 570, 'apple').setInteractive();
@@ -57,24 +56,24 @@ gameScene.createUi = function () {
 
 
     this.candyBtn = this.add.sprite(144, 570, 'candy').setInteractive();
-    this.appleBtn.customStats = {health: -10, fun: 10};
+    this.candyBtn.customStats = {health: -10, fun: 10};
     this.candyBtn.on('pointerdown', this.pickItem);
 
     this.toyBtn = this.add.sprite(216, 570, 'toy').setInteractive();
-    this.appleBtn.customStats = {health: -10, fun: 15};
-    this.toyBtn.on('pointerdown', this.pickItem, this);
+    this.toyBtn.customStats = {health: 0, fun: 15};
+    this.toyBtn.on('pointerdown', this.pickItem);
 
     this.rotateBtn = this.add.sprite(288, 570, 'rotate').setInteractive();
     this.rotateBtn.on('pointerdown', this.rotatePet);
 };
 
 gameScene.rotatePet = function () {
-      console.log(this.customStats);
-      console.log('we are picking' + this.textures.key);
+    console.log('we are rotating pet');
 };
 
 gameScene.pickItem = function () {
-
+    console.log(this.customStats);
+    console.log('you are picking ' + this.texture.key);
 };
 // our game's configuration
 let config = {
