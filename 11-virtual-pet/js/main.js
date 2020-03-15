@@ -138,6 +138,9 @@ gameScene.placeItem = function (pointer, localX, localY) {
 
     //create new item
     let newItem = this.add.sprite(localX, localY, this.selectedItem.texture.key);
+
+    // clear ui
+    this.uiReady();
 };
 // our game's configuration
 let config = {
