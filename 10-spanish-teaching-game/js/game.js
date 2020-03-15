@@ -35,7 +35,7 @@ gameScene.init = function () {
                 x: 0.8,
                 y: 0.8
             },
-            spanish: 'auto'
+            spanish: 'automóvil'
         },
         {
             key: 'tree',
@@ -43,7 +43,7 @@ gameScene.init = function () {
                 x: 550,
                 y: 250
             },
-            spanish: 'arbol'
+            spanish: 'árbol'
         },
     ]
 };
