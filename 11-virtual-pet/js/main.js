@@ -6,7 +6,7 @@ gameScene.init = function () {
     // game stats
     this.stats = {
         health: 100,
-
+        fun: 100
     }
 };
 
@@ -138,9 +138,22 @@ gameScene.placeItem = function (pointer, localX, localY) {
 
     //create new item
     let newItem = this.add.sprite(localX, localY, this.selectedItem.texture.key);
+    
+    //pet stats
+    // this.stats.health += this.selectedItem.customStats.health;
+    // this.stats.fun += this.selectedItem.customStats.fun;
+
+    for (stat in this.selectedItem.customStats) {
+        if (this.selectedItem.customStats.hasOwnProperty(stat)) {
+            this.stats[stat] += this.selectedItem.customStats[stat];
+        }
+    }
+    ;
+    console.log(this.stats);
 
     // clear ui
     this.uiReady();
+
 };
 // our game's configuration
 let config = {
