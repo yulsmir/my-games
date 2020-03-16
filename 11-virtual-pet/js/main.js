@@ -63,10 +63,11 @@ gameScene.createUi = function () {
     this.candyBtn.on('pointerdown', this.pickItem);
 
     this.toyBtn = this.add.sprite(216, 570, 'toy').setInteractive();
-    this.toyBtn.customStats = {health: 0, fun: 15};
+    this.toyBtn.customStats = {fun: 20};
     this.toyBtn.on('pointerdown', this.pickItem);
 
     this.rotateBtn = this.add.sprite(288, 570, 'rotate').setInteractive();
+    this.rotateBtn.customStats = {health: 0, fun: 20};
     this.rotateBtn.on('pointerdown', this.rotatePet);
 
     // array with all buttons
@@ -92,10 +93,23 @@ gameScene.rotatePet = function () {
     this.alpha = 0.5;
 
     let scene = this.scene;
-    setTimeout(function () {
-        //    set scene back to ready
-        scene.uiReady();
-    }, 2000);
+
+    let rotateTween = this.scene.tweens.add({
+        targets: this.scene.pet,
+        duration: 600,
+        angle: 360,
+        pause: false,
+        callbackScope: this,
+        onComplete: function (tween, sprites) {
+            this.scene.stats.fun += this.customStats.fun;
+            this.scene.uiReady();
+            console.log(this.scene.stats);
+        }
+    });
+    // setTimeout(function () {
+    //     //    set scene back to ready
+    //     scene.uiReady();
+    // }, 2000);
 
 
     console.log('we are rotating the pet!')
@@ -138,7 +152,7 @@ gameScene.placeItem = function (pointer, localX, localY) {
 
     //create new item
     let newItem = this.add.sprite(localX, localY, this.selectedItem.texture.key);
-    
+
     //pet stats
     // this.stats.health += this.selectedItem.customStats.health;
     // this.stats.fun += this.selectedItem.customStats.fun;
