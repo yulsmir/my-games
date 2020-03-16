@@ -7,7 +7,9 @@ gameScene.init = function () {
     this.stats = {
         health: 100,
         fun: 100
-    }
+    };
+    this.healthDecay = 5;
+    this.funDecay = 2;
 };
 
 // load asset files for our game
@@ -56,8 +58,18 @@ gameScene.create = function () {
         gameObject.y = dragY;
     });
 
-    //create Ui
     this.createUi();
+    this.createStats();
+    this.refreshStats();
+
+    this.timedEventStats = this.time.addEvent({
+        delay: 1000,
+        repeat: -1,
+        callback: function () {
+            console.log('decrease stats');
+        },
+        callbackScope: this
+    });
 };
 
 //create UI
@@ -112,7 +124,7 @@ gameScene.rotatePet = function () {
         onComplete: function (tween, sprites) {
             this.scene.stats.fun += this.customStats.fun;
             this.scene.uiReady();
-            console.log(this.scene.stats);
+            this.scene.refreshStats();
         }
     });
     // setTimeout(function () {
@@ -182,24 +194,47 @@ gameScene.placeItem = function (pointer, localX, localY) {
             newItem.destroy();
 
             this.pet.on('animationcomplete', function () {
-                // clear UI
+                this.pet.setFrame(0);
                 this.uiReady();
+                this.refreshStats();
             }, this);
             this.pet.play('funnyfaces');
-            //pet stats
-            // this.stats.health += this.selectedItem.customStats.health;
-            // this.stats.fun += this.selectedItem.customStats.fun;
 
-            for (stat in this.selectedItem.customStats) {
-                if (this.selectedItem.customStats.hasOwnProperty(stat)) {
-                    this.stats[stat] += this.selectedItem.customStats[stat];
-                }
-            }
+            this.updateStats(this.selectedItem.customStats);
         }
+    });
+};
+
+gameScene.createStats = function () {
+    this.healthText = this.add.text(20, 20, 'Health: ', {
+        font: '24px Arial',
+        fill: '#ffffff'
+    });
+
+    this.funText = this.add.text(250, 20, 'Fun: ', {
+        font: '24px Arial',
+        fill: '#ffffff'
     });
 
 };
-// our game's configuration
+
+gameScene.refreshStats = function () {
+    this.healthText.setText('Health: ' + this.stats.health);
+    this.funText.setText('Fun: ' + this.stats.fun);
+};
+
+gameScene.updateStats = function (statDiff) {
+    //pet stats
+    // this.stats.health += this.selectedItem.customStats.health;
+    // this.stats.fun += this.selectedItem.customStats.fun;
+
+    for (stat in this.selectedItem.customStats) {
+        if (statDiff.hasOwnProperty(stat)) {
+            this.stats[stat] += statDiff[stat];
+        }
+    }
+};
+
 let config = {
     type: Phaser.AUTO,
     width: 360,
