@@ -8,8 +8,10 @@ gameScene.init = function () {
         health: 100,
         fun: 100
     };
-    this.healthDecay = 5;
-    this.funDecay = 2;
+    this.decayRates = {
+        health: -5,
+        fun: -2,
+    }
 };
 
 // load asset files for our game
@@ -66,7 +68,7 @@ gameScene.create = function () {
         delay: 1000,
         repeat: -1,
         callback: function () {
-            console.log('decrease stats');
+            this.updateStats(this.decayRates);
         },
         callbackScope: this
     });
@@ -122,6 +124,7 @@ gameScene.rotatePet = function () {
         pause: false,
         callbackScope: this,
         onComplete: function (tween, sprites) {
+            this.updateStats(this.selectedItem.customStats);
             this.scene.stats.fun += this.customStats.fun;
             this.scene.uiReady();
             this.scene.refreshStats();
@@ -228,11 +231,22 @@ gameScene.updateStats = function (statDiff) {
     // this.stats.health += this.selectedItem.customStats.health;
     // this.stats.fun += this.selectedItem.customStats.fun;
 
-    for (stat in this.selectedItem.customStats) {
+    let isGameOver = false;
+
+    for (stat in statDiff) {
         if (statDiff.hasOwnProperty(stat)) {
             this.stats[stat] += statDiff[stat];
+            if (this.stats[stat] < 0) {
+                isGameOver = true;
+                this.stats[stat] = 0;
+            }
         }
     }
+    if (isGameOver) this.gameOver();
+};
+
+gameScene.gameOver = function () {
+    console.log('game over');
 };
 
 let config = {
