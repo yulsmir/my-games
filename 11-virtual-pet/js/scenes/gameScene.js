@@ -9,7 +9,7 @@ gameScene.init = function () {
         fun: 100
     };
     this.decayRates = {
-        health: -1,
+        health: -5,
         fun: -2,
     }
 };
@@ -241,7 +241,7 @@ gameScene.gameOver = function () {
         delay: 2000,
         repeat: 0,
         callback: function () {
-            this.scene.restart();
+            this.scene.start('Home');
         },
         callbackScope: this
     });

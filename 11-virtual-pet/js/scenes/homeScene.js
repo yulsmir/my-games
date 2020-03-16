@@ -7,4 +7,9 @@ homeScene.create = function () {
         font: '40px Arial',
         fill: '#ffffff'
     });
+    text.setOrigin(0.5);
+
+    background.on('pointerdown', function () {
+        this.scene.start('Game');
+    }, this);
 };
