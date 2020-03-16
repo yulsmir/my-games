@@ -37,9 +37,18 @@ gameScene.create = function () {
     background.on('pointerdown', this.placeItem, this);
 
     this.pet = this.add.sprite(100, 200, 'pet', 0).setInteractive();
+    this.pet.depth = 1;
 
     //make pet draggable
     this.input.setDraggable(this.pet);
+
+    this.anims.create({
+        key: 'funnyfaces',
+        frames: this.anims.generateFrameNames('pet', {frames: [1, 2, 3]}),
+        frameRate: 7,
+        yoyo: true,
+        repeat: 0
+    })
 
     // follow pointer
     this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
@@ -150,23 +159,44 @@ gameScene.placeItem = function (pointer, localX, localY) {
     // check if item was selected
     if (!this.selectedItem) return;
 
+    //ui must be unbocked
+    if (this.uiBlocked) return;
+
     //create new item
     let newItem = this.add.sprite(localX, localY, this.selectedItem.texture.key);
 
-    //pet stats
-    // this.stats.health += this.selectedItem.customStats.health;
-    // this.stats.fun += this.selectedItem.customStats.fun;
-
-    for (stat in this.selectedItem.customStats) {
-        if (this.selectedItem.customStats.hasOwnProperty(stat)) {
-            this.stats[stat] += this.selectedItem.customStats[stat];
-        }
-    }
-    ;
     console.log(this.stats);
 
-    // clear ui
-    this.uiReady();
+    //block UI
+    this.uiBlocked = true;
+
+    //pet movement tween
+    let petTween = this.tweens.add({
+        targets: this.pet,
+        duration: 500,
+        x: newItem.x,
+        y: newItem.y,
+        paused: false,
+        callbackScope: this,
+        onComplete: function (tween, sprites) {
+            newItem.destroy();
+
+            this.pet.on('animationcomplete', function () {
+                // clear UI
+                this.uiReady();
+            }, this);
+            this.pet.play('funnyfaces');
+            //pet stats
+            // this.stats.health += this.selectedItem.customStats.health;
+            // this.stats.fun += this.selectedItem.customStats.fun;
+
+            for (stat in this.selectedItem.customStats) {
+                if (this.selectedItem.customStats.hasOwnProperty(stat)) {
+                    this.stats[stat] += this.selectedItem.customStats[stat];
+                }
+            }
+        }
+    });
 
 };
 // our game's configuration
