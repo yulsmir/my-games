@@ -49,12 +49,18 @@ gameScene.create = function () {
 
     this.physics.add.collider(this.player, this.platforms);
 
-    // ground.body.allowGravity = false;
-    // ground.body.immovable = true;
-    // let ground2 = this.physics.add.sprite(180, 200, 'ground');
-    // this.physics.add.collider(ground, ground2);
+    this.cursors = this.input.keyboard.createCursorKeys();
 };
 
+gameScene.update = function () {
+    if (this.cursors.left.isDown) {
+        this.player.body.setVelocityX(-100);
+    } else if (this.cursors.right.isDown) {
+        this.player.body.setVelocityX(100);
+    } else {
+        this.player.body.setVelocityX(0);
+    }
+};
 // our game's configuration
 let config = {
     type: Phaser.AUTO,
