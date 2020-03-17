@@ -33,10 +33,10 @@ loadingScene.preload = function () {
         spacing: 1
     });
 
-    // TESTING
-    for (let i = 0; i < 100; i++) {
-        this.load.image('test ' + i, 'assets/images/candy.png');
-    }
+    // // TESTING
+    // for (let i = 0; i < 100; i++) {
+    //     this.load.image('test ' + i, 'assets/images/candy.png');
+    // }
 };
 
 loadingScene.create = function () {
@@ -47,5 +47,5 @@ loadingScene.create = function () {
         yoyo: true,
         repeat: 0
     });
-    // this.scene.start('Home');
+    this.scene.start('Home');
 };
