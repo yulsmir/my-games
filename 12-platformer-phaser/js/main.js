@@ -33,12 +33,21 @@ gameScene.preload = function () {
 
 // executed once, after assets were loaded
 gameScene.create = function () {
+    this.platforms = this.add.group();
+
     let ground = this.add.sprite(180, 604, 'ground');
     this.physics.add.existing(ground, true);
+    this.platforms.add(ground);
 
 
     let platform = this.add.tileSprite(180, 500, 4 * 36, 1 * 30, 'block');
+    this.physics.add.existing(platform, true);
+    this.platforms.add(platform);
 
+    this.player = this.add.sprite(180, 400, 'player', 3);
+    this.physics.add.existing(this.player);
+
+    this.physics.add.collider(this.player, this.platforms);
 
     // ground.body.allowGravity = false;
     // ground.body.immovable = true;
