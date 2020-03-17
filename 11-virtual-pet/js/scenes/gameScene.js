@@ -32,14 +32,6 @@ gameScene.create = function () {
     //make pet draggable
     this.input.setDraggable(this.pet);
 
-    this.anims.create({
-        key: 'funnyfaces',
-        frames: this.anims.generateFrameNames('pet', {frames: [1, 2, 3]}),
-        frameRate: 7,
-        yoyo: true,
-        repeat: 0
-    })
-
     // follow pointer
     this.input.on('drag', function (pointer, gameObject, dragX, dragY) {
         gameObject.x = dragX;
@@ -160,7 +152,7 @@ gameScene.placeItem = function (pointer, localX, localY) {
     // check if item was selected
     if (!this.selectedItem) return;
 
-    //ui must be unbocked
+    //ui must be unblocked
     if (this.uiBlocked) return;
 
     //create new item

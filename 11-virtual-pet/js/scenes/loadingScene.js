@@ -1,6 +1,14 @@
 let loadingScene = new Phaser.Scene('Loading');
 
 loadingScene.preload = function () {
+    let logo = this.add.sprite(this.sys.game.config.width / 2, 250, 'logo');
+    let bgBar = this.add.graphics();
+    let barW = 150;
+    let barH = 30;
+
+    bgBar.setPosition(this.sys.game.config.width / 2 - barW / 2, this.sys.game.config.height / 2 - barH / 2);
+    bgBar.fillStyle(0xF5F5F5, 1);
+    bgBar.fillRect(0, 0, barW, barH);
     // load assets
     this.load.image('backyard', 'assets/images/backyard.png');
     this.load.image('apple', 'assets/images/apple.png');
@@ -18,5 +26,12 @@ loadingScene.preload = function () {
 };
 
 loadingScene.create = function () {
-    this.scene.start('Home')
+    this.anims.create({
+        key: 'funnyfaces',
+        frames: this.anims.generateFrameNames('pet', {frames: [1, 2, 3]}),
+        frameRate: 7,
+        yoyo: true,
+        repeat: 0
+    });
+    // this.scene.start('Home');
 };
