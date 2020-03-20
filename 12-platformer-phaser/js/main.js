@@ -5,6 +5,41 @@ let gameScene = new Phaser.Scene('Game');
 gameScene.init = function () {
     this.playerSpeed = 150;
     this.jumpSpeed = -600;
+
+    this.levelData = {
+        "platforms": [
+            {
+                "x": 72,
+                "y": 450,
+                "numTiles": 6,
+                "key": "block"
+            },
+            {
+                "x": 0,
+                "y": 330,
+                "numTiles": 8,
+                "key": "block"
+            },
+            {
+                "x": 72,
+                "y": 210,
+                "numTiles": 8,
+                "key": "block"
+            },
+            {
+                "x": 0,
+                "y": 90,
+                "numTiles": 7,
+                "key": "block"
+            },
+            {
+                "x": 0,
+                "y": 560,
+                "numTiles": 1,
+                "key": "ground"
+            }
+        ]
+    }
 };
 
 // load asset files for our game
@@ -39,6 +74,7 @@ gameScene.create = function () {
     this.physics.world.bounds.height = 700;
 
     this.platforms = this.add.group();
+    this.setupLevel();
 
     let ground = this.add.sprite(180, 604, 'ground');
     this.physics.add.existing(ground, true);
@@ -68,6 +104,9 @@ gameScene.create = function () {
     this.physics.add.collider(this.player, this.platforms);
 
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.input.on('pointerdown', function (pointer) {
+        console.log(pointer.x, pointer.y);
+    });
 };
 
 gameScene.update = function () {
@@ -94,6 +133,19 @@ gameScene.update = function () {
         this.player.setFrame(2);
     }
 };
+
+gameScene.setupLevel = function () {
+    this.platforms.add.group();
+    for (let i = 0; i < this.levelData.platforms; i++) {
+        let curr = this.levelData.platforms[i];
+        if (curr.numTiles == 1) {
+            newObj = this.add.sprite(curr.x, curr.y, curr.key);
+        } else {
+            newObj = this.add.tileSprite(curr.x, curr.y, curr.numTiles * width, height, curr.key);
+        }
+    }
+};
+
 // our game's configuration
 let config = {
     type: Phaser.AUTO,
