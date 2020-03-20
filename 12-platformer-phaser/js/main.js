@@ -71,28 +71,27 @@ gameScene.create = function () {
 };
 
 gameScene.update = function () {
-    let onGround = this.player.body.blocked.down;
+    let onGround = this.player.body.blocked.down || this.player.body.touching.down;
     if (this.cursors.left.isDown) {
         this.player.body.setVelocityX(-this.playerSpeed);
         this.player.flipX = false;
-        if (!this.player.anims.isPlaying)
+        if (onGround && !this.player.anims.isPlaying)
             this.player.anims.play('walking');
     } else if (this.cursors.right.isDown) {
         this.player.body.setVelocityX(this.playerSpeed);
         this.player.flipX = true;
-        if (!this.player.anims.isPlaying)
+        if (onGround && !this.player.anims.isPlaying)
             this.player.anims.play('walking');
     } else {
         this.player.body.setVelocityX(0);
         this.player.anims.stop('walking');
-
-        this.player.setFrame(3);
+        if (onGround)
+            this.player.setFrame(3);
     }
-    if (this.cursors.space.isDown || this.cursors.up.isDown) {
+    if (onGround & (this.cursors.space.isDown || this.cursors.up.isDown)) {
         this.player.body.setVelocityY(this.jumpSpeed);
         this.player.anims.stop('walking');
         this.player.setFrame(2);
-
     }
 };
 // our game's configuration
