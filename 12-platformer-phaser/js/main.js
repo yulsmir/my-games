@@ -47,6 +47,17 @@ gameScene.create = function () {
     this.player = this.add.sprite(180, 400, 'player', 3);
     this.physics.add.existing(this.player);
 
+    this.anims.create({
+        key: 'walking',
+        frames: this.anims.generateFrameNames('player', {
+            frames: [0, 1, 2]
+        }),
+        frameRate: 12,
+        yoyo: true,
+        repeat: -1,
+    });
+
+
     this.physics.add.collider(this.player, this.platforms);
 
     this.cursors = this.input.keyboard.createCursorKeys();
@@ -55,10 +66,19 @@ gameScene.create = function () {
 gameScene.update = function () {
     if (this.cursors.left.isDown) {
         this.player.body.setVelocityX(-100);
+        this.player.flipX = false;
+        if (!this.player.anims.isPlaying)
+            this.player.anims.play('walking');
     } else if (this.cursors.right.isDown) {
         this.player.body.setVelocityX(100);
+        this.player.flipX = true;
+        if (!this.player.anims.isPlaying)
+            this.player.anims.play('walking');
     } else {
         this.player.body.setVelocityX(0);
+        this.player.anims.play('walking');
+
+        this.player.setFrame(3);
     }
 };
 // our game's configuration
