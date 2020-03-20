@@ -3,6 +3,8 @@ let gameScene = new Phaser.Scene('Game');
 
 // some parameters for our scene
 gameScene.init = function () {
+    this.playerSpeed = 150;
+    this.jumpSpeed = -600;
 };
 
 // load asset files for our game
@@ -33,6 +35,9 @@ gameScene.preload = function () {
 
 // executed once, after assets were loaded
 gameScene.create = function () {
+    this.physics.world.bounds.width = 360;
+    this.physics.world.bounds.height = 700;
+
     this.platforms = this.add.group();
 
     let ground = this.add.sprite(180, 604, 'ground');
@@ -46,6 +51,8 @@ gameScene.create = function () {
 
     this.player = this.add.sprite(180, 400, 'player', 3);
     this.physics.add.existing(this.player);
+
+    this.player.body.setCollideWorldBounds(true);
 
     this.anims.create({
         key: 'walking',
@@ -64,21 +71,28 @@ gameScene.create = function () {
 };
 
 gameScene.update = function () {
+    let onGround = this.player.body.blocked.down;
     if (this.cursors.left.isDown) {
-        this.player.body.setVelocityX(-100);
+        this.player.body.setVelocityX(-this.playerSpeed);
         this.player.flipX = false;
         if (!this.player.anims.isPlaying)
             this.player.anims.play('walking');
     } else if (this.cursors.right.isDown) {
-        this.player.body.setVelocityX(100);
+        this.player.body.setVelocityX(this.playerSpeed);
         this.player.flipX = true;
         if (!this.player.anims.isPlaying)
             this.player.anims.play('walking');
     } else {
         this.player.body.setVelocityX(0);
-        this.player.anims.play('walking');
+        this.player.anims.stop('walking');
 
         this.player.setFrame(3);
+    }
+    if (this.cursors.space.isDown || this.cursors.up.isDown) {
+        this.player.body.setVelocityY(this.jumpSpeed);
+        this.player.anims.stop('walking');
+        this.player.setFrame(2);
+
     }
 };
 // our game's configuration
