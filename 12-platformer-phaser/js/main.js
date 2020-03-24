@@ -5,41 +5,6 @@ let gameScene = new Phaser.Scene('Game');
 gameScene.init = function () {
     this.playerSpeed = 150;
     this.jumpSpeed = -600;
-
-    this.levelData = {
-        platforms: [
-            {
-                x: 72,
-                y: 450,
-                numTiles: 6,
-                key: 'block'
-            },
-            {
-                x: 0,
-                y: 330,
-                numTiles: 8,
-                key: 'block'
-            },
-            {
-                x: 72,
-                y: 210,
-                numTiles: 8,
-                key: 'block'
-            },
-            {
-                x: 0,
-                y: 90,
-                numTiles: 7,
-                key: 'block'
-            },
-            {
-                x: 0,
-                y: 560,
-                numTiles: 1,
-                key: 'ground'
-            }
-        ]
-    }
 };
 
 // load asset files for our game
@@ -66,6 +31,7 @@ gameScene.preload = function () {
         margin: 1,
         spacing: 1
     });
+    this.load.json('levelData', 'assets/json/levelData.json');
 };
 
 // executed once, after assets were loaded
@@ -127,7 +93,7 @@ gameScene.update = function () {
         if (onGround)
             this.player.setFrame(3);
     }
-    if (onGround & (this.cursors.space.isDown || this.cursors.up.isDown)) {
+    if (onGround && (this.cursors.space.isDown || this.cursors.up.isDown)) {
         this.player.body.setVelocityY(this.jumpSpeed);
         this.player.anims.stop('walking');
         this.player.setFrame(2);
@@ -136,10 +102,12 @@ gameScene.update = function () {
 
 gameScene.setupLevel = function () {
     this.platforms = this.add.group();
+    this.levelData = this.cache.json.get('levelData');
     for (let i = 0; i < this.levelData.platforms.length; i++) {
         let curr = this.levelData.platforms[i];
+        let newObj;
         if (curr.numTiles == 1) {
-            newObj = this.add.sprite(curr.x, curr.y, curr.key).setOrigin(0, 0);
+            newObj = this.add.sprite(curr.x, curr.y, curr.key).setOrigin(0);
         } else {
             let width = this.textures.get(curr.key).get(0).width;
             let height = this.textures.get(curr.key).get(0).height;
