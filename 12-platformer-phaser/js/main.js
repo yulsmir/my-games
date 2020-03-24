@@ -38,24 +38,6 @@ gameScene.preload = function () {
 gameScene.create = function () {
     this.physics.world.bounds.width = 360;
     this.physics.world.bounds.height = 700;
-
-    // this.platforms = this.add.group();
-    this.setupLevel();
-
-    // let ground = this.add.sprite(180, 604, 'ground');
-    // this.physics.add.existing(ground, true);
-    // this.platforms.add(ground);
-
-
-    // let platform = this.add.tileSprite(180, 500, 4 * 36, 1 * 30, 'block');
-    // this.physics.add.existing(platform, true);
-    // this.platforms.add(platform);
-
-    this.player = this.add.sprite(180, 400, 'player', 3);
-    this.physics.add.existing(this.player);
-
-    this.player.body.setCollideWorldBounds(true);
-
     this.anims.create({
         key: 'walking',
         frames: this.anims.generateFrameNames('player', {
@@ -66,9 +48,20 @@ gameScene.create = function () {
         repeat: -1,
     });
 
-
+    this.anims.create({
+        key: 'burning',
+        frames: this.anims.generateFrameNames('fire', {
+            frames: [0, 1]
+        }),
+        frameRate: 4,
+        repeat: -1
+    });
+    // this.platforms = this.add.group();
+    this.setupLevel();
+    this.player = this.add.sprite(180, 400, 'player', 3);
+    this.physics.add.existing(this.player);
+    this.player.body.setCollideWorldBounds(true);
     this.physics.add.collider(this.player, this.platforms);
-
     this.cursors = this.input.keyboard.createCursorKeys();
     this.input.on('pointerdown', function (pointer) {
         console.log(pointer.x, pointer.y);
@@ -101,8 +94,8 @@ gameScene.update = function () {
 };
 
 gameScene.setupLevel = function () {
-    this.platforms = this.add.group();
     this.levelData = this.cache.json.get('levelData');
+    this.platforms = this.add.group();
     for (let i = 0; i < this.levelData.platforms.length; i++) {
         let curr = this.levelData.platforms[i];
         let newObj;
@@ -116,8 +109,18 @@ gameScene.setupLevel = function () {
         this.physics.add.existing(newObj, true);
         this.platforms.add(newObj);
     }
-    ;
-};
+
+    this.fires = this.add.group();
+    for (let i = 0; i < this.levelData.fires.length; i++) {
+        let curr = this.levelData.fires[i];
+        let newObj = this.add.sprite(curr.x, curr.y, 'fire').setOrigin(0);
+        this.physics.add.existing(newObj);
+        newObj.body.allowGravity = false;
+        newObj.body.immovable = true;
+        this.fires.add(newObj);
+        newObj.anims.play('burning');
+    }
+}
 
 // our game's configuration
 let config = {
