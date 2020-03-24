@@ -7,36 +7,36 @@ gameScene.init = function () {
     this.jumpSpeed = -600;
 
     this.levelData = {
-        "platforms": [
+        platforms: [
             {
-                "x": 72,
-                "y": 450,
-                "numTiles": 6,
-                "key": "block"
+                x: 72,
+                y: 450,
+                numTiles: 6,
+                key: 'block'
             },
             {
-                "x": 0,
-                "y": 330,
-                "numTiles": 8,
-                "key": "block"
+                x: 0,
+                y: 330,
+                numTiles: 8,
+                key: 'block'
             },
             {
-                "x": 72,
-                "y": 210,
-                "numTiles": 8,
-                "key": "block"
+                x: 72,
+                y: 210,
+                numTiles: 8,
+                key: 'block'
             },
             {
-                "x": 0,
-                "y": 90,
-                "numTiles": 7,
-                "key": "block"
+                x: 0,
+                y: 90,
+                numTiles: 7,
+                key: 'block'
             },
             {
-                "x": 0,
-                "y": 560,
-                "numTiles": 1,
-                "key": "ground"
+                x: 0,
+                y: 560,
+                numTiles: 1,
+                key: 'ground'
             }
         ]
     }
@@ -73,17 +73,17 @@ gameScene.create = function () {
     this.physics.world.bounds.width = 360;
     this.physics.world.bounds.height = 700;
 
-    this.platforms = this.add.group();
+    // this.platforms = this.add.group();
     this.setupLevel();
 
-    let ground = this.add.sprite(180, 604, 'ground');
-    this.physics.add.existing(ground, true);
-    this.platforms.add(ground);
+    // let ground = this.add.sprite(180, 604, 'ground');
+    // this.physics.add.existing(ground, true);
+    // this.platforms.add(ground);
 
 
-    let platform = this.add.tileSprite(180, 500, 4 * 36, 1 * 30, 'block');
-    this.physics.add.existing(platform, true);
-    this.platforms.add(platform);
+    // let platform = this.add.tileSprite(180, 500, 4 * 36, 1 * 30, 'block');
+    // this.physics.add.existing(platform, true);
+    // this.platforms.add(platform);
 
     this.player = this.add.sprite(180, 400, 'player', 3);
     this.physics.add.existing(this.player);
@@ -135,15 +135,20 @@ gameScene.update = function () {
 };
 
 gameScene.setupLevel = function () {
-    this.platforms.add.group();
-    for (let i = 0; i < this.levelData.platforms; i++) {
+    this.platforms = this.add.group();
+    for (let i = 0; i < this.levelData.platforms.length; i++) {
         let curr = this.levelData.platforms[i];
         if (curr.numTiles == 1) {
-            newObj = this.add.sprite(curr.x, curr.y, curr.key);
+            newObj = this.add.sprite(curr.x, curr.y, curr.key).setOrigin(0, 0);
         } else {
+            let width = this.textures.get(curr.key).get(0).width;
+            let height = this.textures.get(curr.key).get(0).height;
             newObj = this.add.tileSprite(curr.x, curr.y, curr.numTiles * width, height, curr.key);
         }
+        this.physics.add.existing(newObj, true);
+        this.platforms.add(newObj);
     }
+    ;
 };
 
 // our game's configuration
