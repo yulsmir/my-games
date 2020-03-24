@@ -7,7 +7,7 @@
       "key": "block"
     },
     {
-      "x": 120,
+      "x": 100,
       "y": 330,
       "numTiles": 8,
       "key": "block"
@@ -19,7 +19,7 @@
       "key": "block"
     },
     {
-      "x": 100,
+      "x": 80,
       "y": 90,
       "numTiles": 7,
       "key": "block"
