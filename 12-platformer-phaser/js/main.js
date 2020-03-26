@@ -58,10 +58,10 @@ gameScene.create = function () {
     });
     // this.platforms = this.add.group();
     this.setupLevel();
-    this.player = this.add.sprite(180, 400, 'player', 3);
-    this.physics.add.existing(this.player);
-    this.player.body.setCollideWorldBounds(true);
+
     this.physics.add.collider(this.player, this.platforms);
+    this.physics.add.collider(this.goal, this.platforms);
+
     this.cursors = this.input.keyboard.createCursorKeys();
     this.input.on('pointerdown', function (pointer) {
         console.log(pointer.x, pointer.y);
@@ -120,7 +120,14 @@ gameScene.setupLevel = function () {
         this.fires.add(newObj);
         newObj.anims.play('burning');
     }
-}
+
+    this.player = this.add.sprite(this.levelData.player.x, this.levelData.player.y, 'player', 3);
+    this.physics.add.existing(this.player);
+    this.player.body.setCollideWorldBounds(true);
+
+    this.goal = this.add.sprite(this.levelData.goal.x, this.levelData.goal.y, 'goal');
+    this.physics.add.existing(this.goal);
+};
 
 // our game's configuration
 let config = {
