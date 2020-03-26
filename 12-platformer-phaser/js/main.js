@@ -36,27 +36,28 @@ gameScene.preload = function () {
 
 // executed once, after assets were loaded
 gameScene.create = function () {
-    this.physics.world.bounds.width = 360;
-    this.physics.world.bounds.height = 700;
-    this.anims.create({
-        key: 'walking',
-        frames: this.anims.generateFrameNames('player', {
-            frames: [0, 1, 2]
-        }),
-        frameRate: 12,
-        yoyo: true,
-        repeat: -1,
-    });
+    if (!this.anims.get('walking')) {
+        this.anims.create({
+            key: 'walking',
+            frames: this.anims.generateFrameNames('player', {
+                frames: [0, 1, 2]
+            }),
+            frameRate: 12,
+            yoyo: true,
+            repeat: -1,
+        });
+    }
+    if (!this.anims.get('burning')) {
 
-    this.anims.create({
-        key: 'burning',
-        frames: this.anims.generateFrameNames('fire', {
-            frames: [0, 1]
-        }),
-        frameRate: 4,
-        repeat: -1
-    });
-    // this.platforms = this.add.group();
+        this.anims.create({
+            key: 'burning',
+            frames: this.anims.generateFrameNames('fire', {
+                frames: [0, 1]
+            }),
+            frameRate: 4,
+            repeat: -1
+        });
+    }
     this.setupLevel();
 
     this.physics.add.collider([this.player, this.goal], this.platforms);
@@ -95,6 +96,10 @@ gameScene.update = function () {
 
 gameScene.setupLevel = function () {
     this.levelData = this.cache.json.get('levelData');
+
+    this.physics.world.bounds.width = this.levelData.world.width;
+    this.physics.world.bounds.height = this.levelData.world.height;
+
     this.platforms = this.physics.add.staticGroup();
     for (let i = 0; i < this.levelData.platforms.length; i++) {
         let curr = this.levelData.platforms[i];
@@ -125,8 +130,12 @@ gameScene.setupLevel = function () {
     this.physics.add.existing(this.player);
     this.player.body.setCollideWorldBounds(true);
 
+    this.cameras.main.setBounds(0, 0, this.levelData.world.width, this.levelData.world.height);
+    this.cameras.main.startFollow(this.player);
+
     this.goal = this.add.sprite(this.levelData.goal.x, this.levelData.goal.y, 'goal');
     this.physics.add.existing(this.goal);
+
 };
 
 gameScene.restartGame = function (sourceSprite, targetSprite) {
