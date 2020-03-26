@@ -59,8 +59,8 @@ gameScene.create = function () {
     // this.platforms = this.add.group();
     this.setupLevel();
 
-    this.physics.add.collider(this.player, this.platforms);
-    this.physics.add.collider(this.goal, this.platforms);
+    this.physics.add.collider([this.player, this.goal], this.platforms);
+    this.physics.add.overlap(this.player, [this.fires, this.goal], this.restartGame, null, this);
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.input.on('pointerdown', function (pointer) {
@@ -95,7 +95,7 @@ gameScene.update = function () {
 
 gameScene.setupLevel = function () {
     this.levelData = this.cache.json.get('levelData');
-    this.platforms = this.add.group();
+    this.platforms = this.physics.add.staticGroup();
     for (let i = 0; i < this.levelData.platforms.length; i++) {
         let curr = this.levelData.platforms[i];
         let newObj;
@@ -110,13 +110,13 @@ gameScene.setupLevel = function () {
         this.platforms.add(newObj);
     }
 
-    this.fires = this.add.group();
+    this.fires = this.physics.add.group({
+        allowGravity: false,
+        immovable: true
+    });
     for (let i = 0; i < this.levelData.fires.length; i++) {
         let curr = this.levelData.fires[i];
         let newObj = this.add.sprite(curr.x, curr.y, 'fire').setOrigin(0);
-        this.physics.add.existing(newObj);
-        newObj.body.allowGravity = false;
-        newObj.body.immovable = true;
         this.fires.add(newObj);
         newObj.anims.play('burning');
     }
@@ -127,6 +127,13 @@ gameScene.setupLevel = function () {
 
     this.goal = this.add.sprite(this.levelData.goal.x, this.levelData.goal.y, 'goal');
     this.physics.add.existing(this.goal);
+};
+
+gameScene.restartGame = function (sourceSprite, targetSprite) {
+    this.cameras.main.fade(500);
+    this.cameras.main.on('camerafadeoutcomplete', function (camera, effect) {
+        this.scene.restart();
+    }, this)
 };
 
 // our game's configuration
