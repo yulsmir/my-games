@@ -4,9 +4,9 @@
     "height": 600
   },
   "spawner": {
-    "interval": 3000,
-    "speed": 60,
-    "lifespan": 10000
+    "interval": 2000,
+    "speed": 80,
+    "lifespan": 40000
   },
   "player": {
     "x": 157,

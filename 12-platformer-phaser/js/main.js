@@ -162,7 +162,6 @@ gameScene.setupSpawner = function () {
             barrel.setVisible(true);
             barrel.body.enable = true;
             barrel.setVelocityX(this.levelData.spawner.speed);
-            console.log(this.barrels.getChildren().length);
             this.time.addEvent({
                 delay: this.levelData.spawner.lifespan,
                 repeat: 0,
@@ -188,7 +187,7 @@ let config = {
         default: 'arcade',
         arcade: {
             gravity: {y: 1000},
-            debug: true
+            debug: false
         }
     }
 };
