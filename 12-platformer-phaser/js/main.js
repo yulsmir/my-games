@@ -157,14 +157,19 @@ gameScene.setupSpawner = function () {
         loop: true,
         callbackScope: this,
         callback: function () {
-            let barrel = this.barrels.create(this.goal.x, this.goal.y, 'barrel');
+            let barrel = this.barrels.get(this.goal.x, this.goal.y, 'barrel');
+            barrel.setActive(true);
+            barrel.setVisible(true);
+            barrel.body.enable = true;
             barrel.setVelocityX(this.levelData.spawner.speed);
+            console.log(this.barrels.getChildren().length);
             this.time.addEvent({
                 delay: this.levelData.spawner.lifespan,
                 repeat: 0,
                 callbackScope: this,
                 callback: function () {
-                    barrel.destroy();
+                    this.barrels.killAndHide(barrel);
+                    barrel.body.enable = false;
                 }
             });
         }
