@@ -5,8 +5,8 @@
   },
   "spawner": {
     "interval": 1000,
-    "speed": 10,
-    "lifespan": 5000
+    "speed": 100,
+    "lifespan": 2000
   },
   "player": {
     "x": 157,
@@ -30,7 +30,7 @@
       "key": "block"
     },
     {
-      "x": 192,
+      "x": 220,
       "y": 210,
       "numTiles": 8,
       "key": "block"

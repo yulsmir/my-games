@@ -59,9 +59,10 @@ gameScene.create = function () {
         });
     }
     this.setupLevel();
+    this.setupSpawner();
 
-    this.physics.add.collider([this.player, this.goal], this.platforms);
-    this.physics.add.overlap(this.player, [this.fires, this.goal], this.restartGame, null, this);
+    this.physics.add.collider([this.player, this.goal, this.barrels], this.platforms);
+    this.physics.add.overlap(this.player, [this.fires, this.goal, this.barrels], this.restartGame, null, this);
 
     this.cursors = this.input.keyboard.createCursorKeys();
     this.input.on('pointerdown', function (pointer) {
@@ -143,6 +144,31 @@ gameScene.restartGame = function (sourceSprite, targetSprite) {
     this.cameras.main.on('camerafadeoutcomplete', function (camera, effect) {
         this.scene.restart();
     }, this)
+};
+
+gameScene.setupSpawner = function () {
+    this.barrels = this.physics.add.group({
+        bounceY: 0.1,
+        bounceX: 1,
+        collideWorldBounds: true
+    });
+    let spawningEvent = this.time.addEvent({
+        delay: this.levelData.spawner.interval,
+        loop: true,
+        callbackScope: this,
+        callback: function () {
+            let barrel = this.barrels.create(this.goal.x, this.goal.y, 'barrel');
+            barrel.setVelocityX(this.levelData.spawner.speed);
+            this.time.addEvent({
+                delay: this.levelData.spawner.lifespan,
+                repeat: 0,
+                callbackScope: this,
+                callback: function () {
+                    barrel.destroy();
+                }
+            });
+        }
+    });
 };
 
 // our game's configuration
