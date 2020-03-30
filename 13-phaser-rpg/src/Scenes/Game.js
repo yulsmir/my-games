@@ -13,12 +13,20 @@ export default class GameScene extends Phaser.Scene {
     this.events.on('resize', this.resize, this);
     this.createMap();
     this.createPlayer();
+    this.cameras.main.startFollow(this.player);
+    this.cursors = this.input.keyboard.createCursorKeys();
   }
 
+  update () {
+
+  };
   createPlayer () {
     this.map.findObject('Player', (obj) => {
-      this.player = new Player(this, obj.x, obj.y)
+      if (obj.type === 'StartingPosition') {
+        this.player = new Player(this, obj.x, obj.y);
+      }
     });
+    this.player.speed = 5;
   }
 
   resize (width, height) {

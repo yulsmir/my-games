@@ -8,4 +8,18 @@ export default class Player extends Phaser.Physics.Arcade.Sprite {
         this.scene.add.existing(this);
         this.setScale(4);
     }
+    update () {
+        if (this.cursors.up.isDown) {
+            this.player.y -= 5;
+        }
+        if (this.cursors.down.isDown) {
+            this.player.y += 5;
+        }
+        if (this.cursors.left.isDown) {
+            this.player.x -= 5;
+        }
+        if (this.cursors.right.isDown) {
+            this.player.x += 5;
+        }
+    };
 };
