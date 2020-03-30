@@ -15,11 +15,17 @@ export default class GameScene extends Phaser.Scene {
     this.createPlayer();
     this.cameras.main.startFollow(this.player);
     this.cursors = this.input.keyboard.createCursorKeys();
+    this.addCollisions();
   }
 
   update () {
     this.player.update(this.cursors);
   };
+
+  addCollisions () {
+    this.physics.add.collider(this.player, this.blockedLayer);
+  };
+
   createPlayer () {
     this.map.findObject('Player', (obj) => {
       if (obj.type === 'StartingPosition') {
@@ -44,5 +50,6 @@ export default class GameScene extends Phaser.Scene {
     this.tiles = this.map.addTilesetImage('RPGpack_sheet');
     this.backgroundLayer = this.map.createStaticLayer('Background', this.tiles, 0, 0);
     this.blockedLayer = this.map.createStaticLayer('Blocked', this.tiles, 0, 0);
+    this.blockedLayer.setCollisionByExclusion([-1]);
   }
 };
